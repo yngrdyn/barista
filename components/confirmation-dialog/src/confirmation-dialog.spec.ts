@@ -195,6 +195,19 @@ describe('ConfirmationDialogComponent', () => {
       expect(dialog2State.textContent!.trim()).toEqual('state2');
     }));
   });
+  describe('propagate attribute to overlay', () => {
+    // tslint:disable-next-line: dt-no-focused-tests
+    it.only('should propagate attribute to overlay when `uitestid` is provided', fakeAsync(() => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.componentInstance.testState = 'missingState';
+      fixture.detectChanges();
+      tick();
+      // const dialog = getDialog(overlayContainerElement);
+      expect(overlayContainerElement.innerHTML).toContain(
+        'uitestid="confirmation-dialog-overlay',
+      );
+    }));
+  });
 });
 
 function testTextContent(
@@ -227,7 +240,11 @@ function getState(oc: HTMLElement, name: string): HTMLElement {
 @Component({
   selector: 'dt-test-component',
   template: `
-    <dt-confirmation-dialog [state]="testState" [showBackdrop]="showBackdrop">
+    <dt-confirmation-dialog
+      uitestid="confirmation-dialog"
+      [state]="testState"
+      [showBackdrop]="showBackdrop"
+    >
       <dt-confirmation-dialog-state name="state1">
         state1
       </dt-confirmation-dialog-state>

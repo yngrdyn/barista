@@ -19,6 +19,10 @@ import { NgModule } from '@angular/core';
 
 import { DtLegendModule } from '@dynatrace/barista-components/legend';
 import { DtOverlayModule } from '@dynatrace/barista-components/overlay';
+import {
+  DT_DEFAULT_UI_TEST_CONFIG,
+  DTUITESTCONFIG,
+} from '@dynatrace/barista-components/core';
 
 import { DtEventChart } from './event-chart';
 import {
@@ -41,5 +45,11 @@ export const DT_EVENT_CHART_DIRECTIVES = [
   exports: DT_EVENT_CHART_DIRECTIVES,
   imports: [CommonModule, DtLegendModule, DtOverlayModule],
   declarations: [DtEventChartLegend, ...DT_EVENT_CHART_DIRECTIVES],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
+  ],
 })
 export class DtEventChartModule {}

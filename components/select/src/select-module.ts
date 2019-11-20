@@ -18,7 +18,11 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { DtOptionModule } from '@dynatrace/barista-components/core';
+import {
+  DtOptionModule,
+  DTUITESTCONFIG,
+  DT_DEFAULT_UI_TEST_CONFIG,
+} from '@dynatrace/barista-components/core';
 import { DtFormFieldModule } from '@dynatrace/barista-components/form-field';
 import { DtIconModule } from '@dynatrace/barista-components/icon';
 
@@ -28,5 +32,11 @@ import { DtSelect } from './select';
   imports: [CommonModule, OverlayModule, DtIconModule, DtOptionModule],
   exports: [DtFormFieldModule, DtOptionModule, DtSelect],
   declarations: [DtSelect],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
+  ],
 })
 export class DtSelectModule {}

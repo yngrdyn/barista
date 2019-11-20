@@ -162,13 +162,28 @@ describe('DtChartTooltip', () => {
       expect(overlayContainerElement.textContent).toContain('54321');
     });
   });
+  describe('propagate attribute to overlay', () => {
+    // tslint:disable-next-line: dt-no-focused-tests
+    it('should propagate attribute to overlay when `uitestid` is provided', fakeAsync(() => {
+      mockIntersectionObserver.mockAllIsIntersecting(true);
+      chartComponent.tooltipDataChange.next({
+        data: DUMMY_TOOLTIP_DATA_LINE_SERIES,
+      });
+      fixture.detectChanges();
+      tick();
+      flush();
+      expect(overlayContainerElement.innerHTML).toContain(
+        'uitestid="tooltip-overlay',
+      );
+    }));
+  });
 });
 
 @Component({
   selector: 'dt-line',
   template: `
     <dt-chart [series]="series" [options]="options">
-      <dt-chart-tooltip>
+      <dt-chart-tooltip uitestid="tooltip">
         <ng-template let-series>
           <dt-key-value-list style="min-width: 100px">
             <dt-key-value-list-item *ngFor="let data of series.points">

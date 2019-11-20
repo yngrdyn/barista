@@ -70,15 +70,14 @@ import {
   DtSelectModule,
   getDtSelectNonFunctionValueError,
 } from '@dynatrace/barista-components/select';
-
-import { createComponent } from '../../testing/create-component';
 import {
   dispatchEvent,
   dispatchFakeEvent,
   dispatchKeyboardEvent,
-} from '../../testing/dispatch-events';
-import { createKeyboardEvent } from '../../testing/event-objects';
-import { wrappedErrorMessage } from '../../testing/wrapped-error-message';
+  createComponent,
+  createKeyboardEvent,
+  wrappedErrorMessage,
+} from '@dynatrace/barista-components/testing';
 
 describe('DtSelect', () => {
   let overlayContainer: OverlayContainer;
@@ -708,6 +707,16 @@ describe('DtSelect', () => {
         expect(overlayContainerElement.textContent).toContain('Steak');
         expect(overlayContainerElement.textContent).toContain('Pizza');
         expect(overlayContainerElement.textContent).toContain('Tacos');
+      }));
+
+      it('should propagate attribute to overlay if `uitestid` is provided', fakeAsync(() => {
+        trigger.click();
+        fixture.detectChanges();
+        flush();
+
+        expect(overlayContainerElement.innerHTML).toContain(
+          'uitestid="select-overlay"',
+        );
       }));
 
       it('should close the panel when an item is clicked', fakeAsync(() => {
@@ -2019,6 +2028,7 @@ describe('DtSelect', () => {
         [aria-label]="ariaLabel"
         [aria-labelledby]="ariaLabelledby"
         [panelClass]="panelClass"
+        uitestid="select"
       >
         <dt-option
           *ngFor="let food of foods"

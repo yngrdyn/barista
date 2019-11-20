@@ -42,14 +42,14 @@ import {
 } from '@dynatrace/barista-components/filter-field';
 import { DtIconModule } from '@dynatrace/barista-components/icon';
 
-import { createComponent } from '../../testing/create-component';
 import {
   dispatchFakeEvent,
   dispatchKeyboardEvent,
-} from '../../testing/dispatch-events';
-import { MockNgZone } from '../../testing/mock-ng-zone';
-import { typeInElement } from '../../testing/type-in-element';
-import { wrappedErrorMessage } from '../../testing/wrapped-error-message';
+  createComponent,
+  MockNgZone,
+  typeInElement,
+  wrappedErrorMessage,
+} from '@dynatrace/barista-components/testing';
 
 const TEST_DATA = {
   autocomplete: [
@@ -276,6 +276,17 @@ describe('DtFilterField', () => {
       fixture.detectChanges();
       expect(overlayContainerElement).toBeDefined();
     });
+
+    // TODO: Propagate Attribute Testing
+    // tslint:disable-next-line: dt-no-focused-tests
+    // it('should propagate attribute to overlay if `uitestid` is provided', () => {
+    //   filterField.focus();
+    //   zone.simulateMicrotasksEmpty();
+    //   zone.simulateZoneExit();
+    //   fixture.detectChanges();
+    //   console.log(overlayContainerElement.getAttribute('uitestid'));
+    //   expect(overlayContainerElement.outerHTML).toContain('uitestid=')
+    // })
   });
 
   describe('with autocomplete', () => {
@@ -2111,6 +2122,7 @@ function getClearAll(fixture: ComponentFixture<any>): HTMLButtonElement | null {
       [dataSource]="dataSource"
       [label]="label"
       [clearAllLabel]="clearAllLabel"
+      uitestid="filter-field"
     ></dt-filter-field>
   `,
 })

@@ -20,7 +20,11 @@ import { NgModule } from '@angular/core';
 import { DtAutocompleteModule } from '@dynatrace/barista-components/autocomplete';
 import { DtButtonModule } from '@dynatrace/barista-components/button';
 import { DtButtonGroupModule } from '@dynatrace/barista-components/button-group';
-import { DtOptionModule } from '@dynatrace/barista-components/core';
+import {
+  DtOptionModule,
+  DTUITESTCONFIG,
+  DT_DEFAULT_UI_TEST_CONFIG,
+} from '@dynatrace/barista-components/core';
 import { DtIconModule } from '@dynatrace/barista-components/icon';
 import { DtInputModule } from '@dynatrace/barista-components/input';
 import { DtLoadingDistractorModule } from '@dynatrace/barista-components/loading-distractor';
@@ -52,6 +56,12 @@ import { DtFilterFieldTag } from './filter-field-tag/filter-field-tag';
     DtFilterFieldTag,
     DtFilterFieldRange,
     DtFilterFieldRangeTrigger,
+  ],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
   ],
 })
 export class DtFilterFieldModule {}

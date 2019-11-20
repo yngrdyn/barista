@@ -24,7 +24,7 @@ import { By } from '@angular/platform-browser';
 
 import { DtEventChartModule } from '@dynatrace/barista-components/event-chart';
 
-import { dispatchFakeEvent } from '../../testing/dispatch-events';
+import { dispatchFakeEvent } from '@dynatrace/barista-components/testing';
 import { DtEventChart } from './event-chart';
 import { DtEventChartSelectedEvent } from './event-chart-directives';
 
@@ -340,6 +340,23 @@ describe('DtEventChart', () => {
         'dt-event-chart-event-selected',
       );
     });
+
+    // tslint:disable-next-line: dt-no-focused-tests
+    it('should propagate attribute to overlay if `uitestid` is provided', () => {
+      const firstBubble = fixture.debugElement.query(
+        By.css('.dt-event-chart-event'),
+      );
+      dispatchFakeEvent(firstBubble.nativeElement, 'mouseenter');
+      fixture.detectChanges();
+
+      const overlayPane = overlayContainerElement.querySelector(
+        '.dt-event-chart-overlay-panel',
+      );
+
+      expect(overlayPane!.outerHTML).toContain(
+        'uitestid="event-chart-overlay"',
+      );
+    });
   });
 
   describe('with dynamic data', () => {
@@ -600,7 +617,7 @@ class EventChartStaticData {
 @Component({
   selector: 'dt-test-app',
   template: `
-    <dt-event-chart>
+    <dt-event-chart uitestid="event-chart">
       <dt-event-chart-event
         value="0"
         lane="xhr"

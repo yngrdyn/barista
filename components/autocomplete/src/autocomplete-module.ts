@@ -18,7 +18,11 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { DtOptionModule } from '@dynatrace/barista-components/core';
+import {
+  DTUITESTCONFIG,
+  DtOptionModule,
+  DT_DEFAULT_UI_TEST_CONFIG,
+} from '@dynatrace/barista-components/core';
 
 import { DtAutocomplete } from './autocomplete';
 import { DtAutocompleteOrigin } from './autocomplete-origin';
@@ -33,5 +37,11 @@ import { DtAutocompleteTrigger } from './autocomplete-trigger';
     DtOptionModule,
   ],
   declarations: [DtAutocompleteTrigger, DtAutocomplete, DtAutocompleteOrigin],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
+  ],
 })
 export class DtAutocompleteModule {}

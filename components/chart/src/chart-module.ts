@@ -24,6 +24,10 @@ import { DtFormattersModule } from '@dynatrace/barista-components/formatters';
 import { DtIconModule } from '@dynatrace/barista-components/icon';
 import { DtLoadingDistractorModule } from '@dynatrace/barista-components/loading-distractor';
 import { DtSelectionAreaModule } from '@dynatrace/barista-components/selection-area';
+import {
+  DTUITESTCONFIG,
+  DT_DEFAULT_UI_TEST_CONFIG,
+} from '@dynatrace/barista-components/core';
 
 import { DtChart } from './chart';
 import { DtChartHeatfield } from './heatfield/chart-heatfield';
@@ -60,5 +64,11 @@ const COMPONENTS = [
   ],
   exports: [...COMPONENTS],
   declarations: [...COMPONENTS, DtChartSelectionArea],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
+  ],
 })
 export class DtChartModule {}

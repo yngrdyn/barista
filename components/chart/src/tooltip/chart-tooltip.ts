@@ -30,12 +30,21 @@ import {
   TemplateRef,
   ViewContainerRef,
   ViewEncapsulation,
+  ElementRef,
+  Inject,
+  Optional,
+  SkipSelf,
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
-import { isDefined } from '@dynatrace/barista-components/core';
+import {
+  isDefined,
+  DTUITESTCONFIG,
+  setUiTestAttribute,
+  DtUiTestConfiguration,
+} from '@dynatrace/barista-components/core';
 
-import { DtChart } from '../chart';
+import { DtChart, DT_CHART_RESOLVER, DtChartResolver } from '../chart';
 import { DtChartTooltipData } from '../highcharts/highcharts-tooltip-types';
 
 interface HighchartsPlotBackgroundInformation {
@@ -91,6 +100,14 @@ export class DtChartTooltip implements OnDestroy {
     private _overlay: Overlay,
     private _viewContainerRef: ViewContainerRef,
     private _changeDetectorRef: ChangeDetectorRef,
+    @Inject(DT_CHART_RESOLVER)
+    @Optional()
+    @SkipSelf()
+    private _resolveParentChart: DtChartResolver,
+    @Optional()
+    @Inject(DTUITESTCONFIG)
+    private _config?: DtUiTestConfiguration,
+    private _elementRef?: ElementRef<HTMLElement>,
   ) {}
 
   ngOnDestroy(): void {
@@ -137,6 +154,13 @@ export class DtChartTooltip implements OnDestroy {
       overlayRef.attach(this._portal);
 
       this._overlayRef = overlayRef;
+      if (this._elementRef && this._config) {
+        setUiTestAttribute(
+          this._elementRef,
+          this._overlayRef.overlayElement,
+          this._config,
+        );
+      }
     }
   }
 

@@ -18,6 +18,10 @@ import { NgModule } from '@angular/core';
 
 import { DtProgressBarModule } from '@dynatrace/barista-components/progress-bar';
 import { DtThemingModule } from '@dynatrace/barista-components/theming';
+import {
+  DTUITESTCONFIG,
+  DT_DEFAULT_UI_TEST_CONFIG,
+} from '@dynatrace/barista-components/core';
 
 import { DtConsumption } from './consumption';
 import {
@@ -43,5 +47,11 @@ const CONSUMPTION_DIRECTIVES = [
   exports: CONSUMPTION_DIRECTIVES,
   declarations: CONSUMPTION_DIRECTIVES,
   imports: [DtProgressBarModule, DtThemingModule],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
+  ],
 })
 export class DtConsumptionModule {}

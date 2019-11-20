@@ -22,6 +22,10 @@ import { NgModule } from '@angular/core';
 import { DtButtonModule } from '@dynatrace/barista-components/button';
 import { DtIconModule } from '@dynatrace/barista-components/icon';
 import { DtThemingModule } from '@dynatrace/barista-components/theming';
+import {
+  DTUITESTCONFIG,
+  DT_DEFAULT_UI_TEST_CONFIG,
+} from '@dynatrace/barista-components/core';
 
 import { DtContextDialog } from './context-dialog';
 import { DtContextDialogTrigger } from './context-dialog-trigger';
@@ -46,5 +50,11 @@ const EXPORTED_DECLARATIONS = [
   ],
   exports: [...EXPORTED_DECLARATIONS],
   declarations: [...EXPORTED_DECLARATIONS],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
+  ],
 })
 export class DtContextDialogModule {}

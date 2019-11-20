@@ -75,6 +75,9 @@ import {
   isDefined,
   readKeyCode,
   stringify,
+  setUiTestAttribute,
+  DTUITESTCONFIG,
+  DtUiTestConfiguration,
 } from '@dynatrace/barista-components/core';
 import { DtFormField } from '@dynatrace/barista-components/form-field';
 
@@ -256,6 +259,9 @@ export class DtAutocompleteTrigger<T>
     @Optional() @Host() private _formField: DtFormField<string>,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private _document: any,
+    @Optional()
+    @Inject(DTUITESTCONFIG)
+    private _config?: DtUiTestConfiguration,
   ) {
     // tslint:disable-next-line:strict-type-predicates
     if (typeof window !== 'undefined') {
@@ -410,7 +416,13 @@ export class DtAutocompleteTrigger<T>
 
     if (!this._overlayRef) {
       this._overlayRef = this._overlay.create(this._getOverlayConfig());
-
+      if (this._config) {
+        setUiTestAttribute(
+          this._element,
+          this._overlayRef.overlayElement,
+          this._config,
+        );
+      }
       this._overlayRef.keydownEvents().subscribe(event => {
         const keyCode = readKeyCode(event);
         // Close when pressing ESCAPE or ALT + UP_ARROW, based on the a11y guidelines.

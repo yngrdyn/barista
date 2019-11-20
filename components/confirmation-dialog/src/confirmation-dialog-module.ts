@@ -18,6 +18,10 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import {
+  DTUITESTCONFIG,
+  DT_DEFAULT_UI_TEST_CONFIG,
+} from '@dynatrace/barista-components/core';
 import { DtThemingModule } from '@dynatrace/barista-components/theming';
 
 import { DtConfirmationDialog } from './confirmation-dialog';
@@ -35,6 +39,12 @@ import { DtConfirmationDialogState } from './confirmation-dialog-state/confirmat
     DtConfirmationDialog,
     DtConfirmationDialogState,
     DtConfirmationDialogActions,
+  ],
+  providers: [
+    {
+      provide: DTUITESTCONFIG,
+      useValue: DT_DEFAULT_UI_TEST_CONFIG,
+    },
   ],
 })
 export class DtConfirmationDialogModule {}
