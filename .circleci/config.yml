@@ -250,6 +250,19 @@ jobs:
           paths:
             - ./.config/last-{{ .Environment.CIRCLE_BRANCH }}-sha.txt
 
+# - save the latest hash in a file
+  release:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/barista
+      - restore_cache:
+          key: build-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+      - run:
+          name: NPM release
+          command: |
+            ls -lah
+            ls -lah ./dist
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
@@ -263,7 +276,7 @@ jobs:
 workflows:
   version: 2.1
 # - Runs on every PR check
-  pr_check:
+  pr-check:
     jobs:
       - install
       - check-formatting:
@@ -290,6 +303,9 @@ workflows:
       - build:
           requires:
             - install
+      - build:
+          requires:
+            - install
       - save-latest:
           filters:
             branches:
@@ -302,4 +318,23 @@ workflows:
             - lint-styles
             - unit-test
             - e2e-test
+
+# - Runs on potential releases
+  release:
+    jobs:
+      - install:
+          filters:
+            branches:
+              only: /^chore-release$/
+      - build:
+          filters:
+            branches:
+              only: /^chore-release$/
+          requires:
+            - install
+      - release:
+          filters:
+            branches:
+              only: /^chore-release$/
+          requires:
             - build

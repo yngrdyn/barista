@@ -36,6 +36,9 @@
       "implicitDependencies": ["demos", "examples"],
       "tags": ["type:tooling"]
     },
+    "release-tools": {
+      "tags": ["type:tooling"]
+    },
     "shared-barista-definitions": {
       "tags": ["type:types"]
     },

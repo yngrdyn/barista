@@ -667,6 +667,33 @@
         }
       }
     },
+    "release-tools": {
+      "root": "tools/release",
+      "sourceRoot": "tools/release/src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@dynatrace/barista-builders:typescript",
+          "options": {
+            "tsConfig": "tools/release/tsconfig.json"
+          },
+          "configurations": {
+            "production": {
+              "optimization": false,
+              "extractLicenses": false,
+              "inspect": false
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["tools/release/tsconfig.json"],
+            "exclude": ["**/node_modules/**", "!tools/release/**"]
+          }
+        }
+      }
+    },
     "testing": {
       "projectType": "library",
       "root": "libs/testing",
