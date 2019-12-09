@@ -127,11 +127,15 @@ export interface BaStrapiContributor extends BaStrapiNamedEntity {
 export interface BaStrapiPage extends BaStrapiBase {
   title: string;
   slug: string;
+  public: boolean;
+  description: string;
   content: string;
-  uxWikiPage: string;
+  wiki: string;
   tags: BaStrapiNamedEntity[];
   contributors: BaStrapiContributor[];
   category: BaStrapiCategory;
+  draft: boolean;
+  toc: boolean;
 }
 
 /** Strapi snippet */
@@ -162,6 +166,7 @@ export interface BaStrapiPageTeaser extends BaStrapiBase {
   text: string;
   link: string;
   borderColor: string;
+  page: BaStrapiPage;
 }
 
 /** Strapi CTA */

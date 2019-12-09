@@ -55,11 +55,14 @@ export const strapiBuilder: BaPageBuilder = async () => {
     return [];
   }
 
-  const pagesData = await fetchContentList<BaStrapiPage>(
+  let pagesData = await fetchContentList<BaStrapiPage>(
     BaStrapiContentType.Pages,
     { publicContent: isPublicBuild() },
     STRAPI_ENDPOINT,
   );
+
+  // Filter pages with draft set to null or false
+  pagesData = pagesData.filter(page => !page.draft);
 
   return Promise.all(
     pagesData.map(async page => {
@@ -89,6 +92,11 @@ function strapiMetaData(page: BaStrapiPage): BaSinglePageMeta {
     layout: BaLayoutType.Default,
   };
 
+  // Set description
+  if (page.description) {
+    metaData.description = page.description;
+  }
+
   // Set tags
   const tags = page.tags.map(tag => tag.name) || [];
   if (tags.length > 0) {
@@ -96,8 +104,8 @@ function strapiMetaData(page: BaStrapiPage): BaSinglePageMeta {
   }
 
   // Set UX Wiki page link (only for internal Barista)
-  if (!isPublicBuild() && page.uxWikiPage) {
-    metaData.wiki = page.uxWikiPage;
+  if (!isPublicBuild() && page.wiki) {
+    metaData.wiki = page.wiki;
   }
 
   // Set contributors
@@ -123,6 +131,10 @@ function strapiMetaData(page: BaStrapiPage): BaSinglePageMeta {
     if (devSupport.length > 0) {
       metaData.contributors!.dev = devSupport;
     }
+  }
+
+  if (page.toc) {
+    metaData.toc = page.toc;
   }
 
   return metaData;

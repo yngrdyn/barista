@@ -87,7 +87,11 @@ async function fetchContent(
 
     const req = request(options, res => {
       res.on('data', data => {
-        fullData = `${fullData}${data.toString()}`;
+        if (res.statusCode === 200) {
+          fullData = `${fullData}${data.toString()}`;
+        } else {
+          fullData = '';
+        }
       });
 
       res.on('end', () => {
