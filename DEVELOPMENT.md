@@ -105,24 +105,3 @@ To test the rules run
 ```
 npm run tslint:test
 ```
-
-### Using Gradle build
-
-Gradle build is meant for CI servers and does not require NodeJS installed
-upfront. Instead, it downloads NodeJS binaries locally from Arifactory and runs
-any yarn task with that node version.
-
-Gradle tasks look very similar to the NPM ones, e.g.:
-
-```
-./gradlew yarn_install
-./gradlew test
-./gradlew lint
-./gradlew compile
-```
-
-To see complete list of gradlew builds, run:
-
-```
-./gradlew tasks
-```
