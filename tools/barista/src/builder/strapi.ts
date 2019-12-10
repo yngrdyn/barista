@@ -64,22 +64,24 @@ export const strapiBuilder: BaPageBuilder = async () => {
   // Filter pages with draft set to null or false
   pagesData = pagesData.filter(page => !page.draft);
 
-  return Promise.all(
-    pagesData.map(async page => {
-      const pageDir = page.category ? page.category.title.toLowerCase() : '/';
-      const relativeOutFile = page.slug
-        ? join(pageDir, `${page.slug}.json`)
-        : join(pageDir, `${slugify(page.title)}.json`);
-      const pageContent = await transformPage(
-        {
-          ...strapiMetaData(page),
-          content: page.content,
-        },
-        TRANSFORMERS,
-      );
-      return { pageContent, relativeOutFile };
-    }),
-  );
+  const transformed: BaPageBuildResult[] = [];
+
+  for (const page of pagesData) {
+    const pageDir = page.category ? page.category.title.toLowerCase() : '/';
+    const relativeOutFile = page.slug
+      ? join(pageDir, `${page.slug}.json`)
+      : join(pageDir, `${slugify(page.title)}.json`);
+    const pageContent = await transformPage(
+      {
+        ...strapiMetaData(page),
+        content: page.content,
+      },
+      TRANSFORMERS,
+    );
+    transformed.push({ pageContent, relativeOutFile });
+  }
+
+  return transformed;
 };
 
 /**
