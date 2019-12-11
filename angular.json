@@ -708,6 +708,9 @@
           "configurations": {
             "production": {}
           }
+        },
+        "packager": {
+          "builder": "@dynatrace/barista-builders:packager"
         }
       }
     },

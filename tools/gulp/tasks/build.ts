@@ -24,6 +24,7 @@ task('library:removeModuleId', () =>
 
 task('library:styles', () => {
   const stylesGraph = parseDir(join(buildConfig.libDir, 'style'));
+  console.log(stylesGraph);
 
   return src(Object.keys(stylesGraph.index), { base: buildConfig.libDir }).pipe(
     dest(buildConfig.libOutputDir),
