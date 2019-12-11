@@ -25,18 +25,16 @@ export async function copyStyles(
   options: PackagerOptions,
   projectRoot: string,
   libraryDestination: string,
-): Promise<void[]> {
+): Promise<void> {
   const allStyleFiles = options.styleFolders.map(folder =>
     Object.keys(parseDir(join(projectRoot, folder)).index),
   );
-  const files = Array.from(new Set(...allStyleFiles));
-  return Promise.all(
-    files.map(async file => {
-      const destination = join(libraryDestination, relative(projectRoot, file));
-      await fs.mkdir(dirname(destination), { recursive: true });
-      return fs.copyFile(file, destination);
-    }),
-  );
+  const files = new Set(...allStyleFiles);
+  for (const file of files) {
+    const destination = join(libraryDestination, relative(projectRoot, file));
+    await fs.mkdir(dirname(destination), { recursive: true });
+    await fs.copyFile(file, destination);
+  }
 }
 
 /** Asynchronously copies all asset folders in the options specified */
@@ -46,7 +44,7 @@ export async function copyAssets(
   libraryDestination: string,
 ): Promise<void[]> {
   return Promise.all(
-    options.assetFolders.map(async folder => {
+    options.assetFolders.map(folder => {
       const destination = join(libraryDestination, folder);
       return copyDirectory(join(projectRoot, folder), destination);
     }),

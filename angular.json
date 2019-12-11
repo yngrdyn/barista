@@ -710,7 +710,13 @@
           }
         },
         "packager": {
-          "builder": "@dynatrace/barista-builders:packager"
+          "builder": "@dynatrace/barista-builders:packager",
+          "options": {
+            "releasePackageJson": "package.json",
+            "placeholder": "{{VERSION}}",
+            "styleFolders": ["style"],
+            "assetFolders": ["assets"]
+          }
         }
       }
     },

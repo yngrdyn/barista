@@ -34,44 +34,37 @@ import { PackagerOptions } from './schema';
 import { copyStyles, copyAssets } from './copy-assets';
 
 export async function packager(
-  userOptions: PackagerOptions,
+  options: PackagerOptions,
   context: BuilderContext,
 ): Promise<BuilderOutput> {
-  const options: PackagerOptions = {
-    releasePackageJson: 'package.json',
-    placeholder: '0.0.0-NG',
-    styleFolders: ['style'],
-    assetFolders: ['assets'],
-    ...userOptions,
-  };
-
   const project = context.target !== undefined ? context.target!.project : '';
   context.logger.info(`Packaging ${project}...`);
   const target: Target = {
     target: 'build',
     project,
   };
+  let ngPackagrBuilderOptions;
+  try {
+    // Read the options of the build target options set up with the ng-packagr builder
+    ngPackagrBuilderOptions = ((await context.getTargetOptions(
+      target,
+    )) as unknown) as NgPackagrBuilderOptions;
 
-  // Read the options of the build target options set up with the ng-packagr builder
-  const ngPackagrBuilderOptions = ((await context.getTargetOptions(
-    target,
-  )) as unknown) as NgPackagrBuilderOptions;
-
-  if (
-    ngPackagrBuilderOptions === undefined ||
-    ngPackagrBuilderOptions.project === undefined
-  ) {
+    if (ngPackagrBuilderOptions.project === undefined) {
+      throw new Error(
+        'Error: Build target does not have a project set for the ng-packagr in angular.json',
+      );
+    }
+  } catch (err) {
     // If we cannot find the project set for the ng-packagr we cannot continue
-    context.logger.error(
-      'Error: Build target does not have a project set for the ng-packagr in angular.json',
-    );
+    context.logger.error(err);
     return { success: false };
   }
 
   try {
     const ngPackagrConfigPath = join(
       context.workspaceRoot,
-      ngPackagrBuilderOptions.project.toString(),
+      ngPackagrBuilderOptions.project,
     );
     // try to parse the ng-package.json file
     const ngPackagrConfig = await tryJsonParse<NgPackagerJson>(
@@ -142,10 +135,17 @@ export async function packager(
     // copy assets
     context.logger.info('Copying assets...');
     await copyAssets(options, projectRoot, libraryDestination);
+
+    context.logger.info(
+      '------------------------------------------------------------------------------',
+    );
+    context.logger.info('Packaging done!');
+    context.logger.info(
+      '------------------------------------------------------------------------------',
+    );
     return { success: buildResult.success };
   } catch (err) {
     context.logger.error(err);
-    console.log(err);
   }
   return { success: false };
 }

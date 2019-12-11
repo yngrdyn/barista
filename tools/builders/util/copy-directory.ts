@@ -22,10 +22,10 @@ export async function copyDirectory(
   source: string,
   target: string,
 ): Promise<void> {
-  let exists = existsSync(source);
+  const exists = existsSync(source);
   if (exists) {
-    let stats = exists && statSync(source);
-    let isDirectory = exists && stats.isDirectory();
+    const stats = statSync(source);
+    const isDirectory = exists && stats.isDirectory();
     if (isDirectory) {
       const dirs = await fs.readdir(source);
       await fs.mkdir(target);
@@ -40,5 +40,7 @@ export async function copyDirectory(
     } else {
       await fs.copyFile(source, target);
     }
+  } else {
+    console.warn(`The directory '${source}' you want to copy does not exist`);
   }
 }
