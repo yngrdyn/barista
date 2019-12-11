@@ -618,7 +618,6 @@ export class DtFilterField<T> implements AfterViewInit, OnDestroy, OnChanges {
 
   /** @internal Clears all filters and switch to root def. */
   _clearAll(event: Event): void {
-    event.stopPropagation();
     // Only filters that are deletable should be removed
     // We need to aggregate the once that should be removed on the one hand,
     // so we can emit them to the consumer.
